@@ -1,6 +1,9 @@
 pacman -Sy
-pacman -S btrfs-progs dosfstools mtools
-nano /etc/pacman.d/mirrorlist # edit mirrors
+pacman -S git
+git clone https://github.com/ftlol/scripts.git
+cd scripts
+cp mirrorlist /etc/pacman.d
+pacman -S btrfs-progs
 cfdisk /dev/sda
 #make three partiotions, 512M, 25G , 8G
 mkfs.fat -F32 /dev/sda1
