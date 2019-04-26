@@ -1,3 +1,5 @@
+dhclient -v
+timedatectl set-ntp true
 pacman -Sy
 pacman -S git
 git clone https://github.com/ftlol/scripts.git
