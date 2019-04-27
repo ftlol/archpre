@@ -1,0 +1,19 @@
+set font sun12x22
+timedatectl set-ntp true
+(parted #mklabel GPT and then q
+cgdisk /dev/sda
+#create new partition 4096M ef00 EFI
+#create new partition 250G 8300 System
+#create new partition 8G 8200 SWAP)
+mkfs.msdos -F32 /dev/sda1
+mkfs.btrfs /dev/sda2
+mkswap /dev/sda3
+swapon /dev/sda3
+mount /dev/sda2 /mnt
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+pacstrap /mnt /base base-devel
+arch-chroot
+ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime
+hwclock --systohc
+vi /etc/local.gen
