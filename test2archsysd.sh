@@ -12,11 +12,15 @@ hwclock --systohc --utc
 pacman -S networkmamager
 systemctl enable NetworkManager
 passwd #type password twice
-mkdir /boot/efi
-mount /dev/sda1 /boot/efi
-pacman -S grub efibootmgr
-grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
-grub-mkconfig -o /boot/grub/grub.cfg
-exit
-unmount /dev/sda
+mkdir /boot
+mount /dev/sda1 /boot
+bootctl --path=/boot install
+cd /boot/loader/
+vi loader.conf
+#change default to arch-* then save
+cd entries/
+vi arch.conf
+#add these lines title Arch Linux & linux /vmlinuz & initrd /initramfs.linux.img & options root=UUID(enter hdrive uuid) rw
+exit #exit from chroot
+umount -a
 reboot
