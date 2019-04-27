@@ -16,4 +16,8 @@ pacstrap /mnt /base base-devel
 arch-chroot
 ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime
 hwclock --systohc
-vi /etc/local.gen
+vi /etc/locale.gen #uncomment en_US.UTF-8 UTF-8
+locale-gen
+echo "pc" > /etc/hostname
+vi /etc/hosts #add 127.0.1.1 pc.localdomain pc then save
+
