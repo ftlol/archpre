@@ -12,12 +12,28 @@ swapon /dev/sda3
 mount /dev/sda2 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
+genfstab -U /mnt > /mnt/etc/fstab
 pacstrap /mnt /base base-devel
+cat /mnt/etc/fstab
 arch-chroot
 ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime
 hwclock --systohc
 vi /etc/locale.gen #uncomment en_US.UTF-8 UTF-8
 locale-gen
+vi /etc/locale.conf # add line LANG=en_US.UTF-8 then save
+vi /etc/hosts # add lines 127.0.0.1 & pc ::1 pc & 127.0.1.1 pc.localdomain pc then save
+# or
 echo "pc" > /etc/hostname
 vi /etc/hosts #add 127.0.1.1 pc.localdomain pc then save
+passwd #enter passwd twice
+bootctl --path=/boot install
+cd /boot/loader/
+vi loader.conf
+#change default to arch-* then save
+cd entries/
+vi arch.conf
+#add these lines title Arch Linux & linux /vmlinuz & initrd /initramfs.linux.img & options root=UUID(enter hdrive uuid) rw
+exit #exit from chroot
+umount -R /mnt
+reboot
 
