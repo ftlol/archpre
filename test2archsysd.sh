@@ -4,8 +4,8 @@ cfdisk /dev/sda #make three partiotions, 512M, 25G , 8G
 mkfs.fat -F32 /dev/sda1
 mkfs.btrfs /dev/sda2
 mount /dev/sda2 /mnt
-pacstrap -c /mnt base base-devel sudo btrfs-progs
-genfstab -U -p /mnt >> /mnt/etc/fstab
+pacstrap /mnt base base-devel sudo btrfs-progs
+genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
 locale-gen
 hwclock --systohc --utc
