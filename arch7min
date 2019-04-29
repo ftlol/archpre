@@ -1,18 +1,14 @@
-nano /etc/pacman.d/mirrorlist
-ls /sys/firmware/efi
-dmesg | greg sda
-lsblk
-cat /proc/partitions
-gdisk /dev/sda
-o #clear drive
-n # create partion
-1 # partition number
-2048 #first sector
-2560 #last sector
-ef00 #partition type efi
-#repeat for other partitions and then w to write and q to quit
-gdisk -l /dev/sda
-mkfs.vfat /dev/sda1
+
+#check drives and efi
+#ls /sys/firmware/efi
+#dmesg | greg sda
+#lsblk
+#gdisk or fdisk -l #checkpartitions
+#cat /proc/partitions
+#if your disk isnot clean then entered parted and creat new GPT table and save and exit then reboot
+nano /etc/pacman.d/mirrorlist #edit to your locale delete the rest then save and exit
+cfdisk /dev/sda #create partitions efi root swap
+mkfs.fat -F32 /dev/sda1
 mkfs.btrfs /dev/sda2
 mkswap /dev/sda3
 swapon /dev/sda3
@@ -23,3 +19,18 @@ pacstrap /mnt
 arch-chroot /mnt
 bootctl install
 cd /boot/
+cd loader
+pacman -Sy vim
+vim loader.con # edit timeout and replace numbers with arch-* then save and exit
+cd entries/
+vim arch.conf
+title ArchLinux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+opts root=
+:r !blkid #vim command for reading device id
+copy sda2 ids and then :yy to after the root= and then remove quotes
+save and exit
+reboot
+
+
