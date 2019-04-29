@@ -1,0 +1,25 @@
+nano /etc/pacman.d/mirrorlist
+ls /sys/firmware/efi
+dmesg | greg sda
+lsblk
+cat /proc/partitions
+gdisk /dev/sda
+o #clear drive
+n # create partion
+1 # partition number
+2048 #first sector
+2560 #last sector
+ef00 #partition type efi
+#repeat for other partitions and then w to write and q to quit
+gdisk -l /dev/sda
+mkfs.vfat /dev/sda1
+mkfs.btrfs /dev/sda2
+mkswap /dev/sda3
+swapon /dev/sda3
+mount /dev/sda2 /mnt
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+pacstrap /mnt
+arch-chroot /mnt
+bootctl install
+cd /boot/
