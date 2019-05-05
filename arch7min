@@ -1,13 +1,4 @@
-
-#check drives and efi
-#ls /sys/firmware/efi
-#dmesg | greg sda
-#lsblk
-#gdisk or fdisk -l #checkpartitions
-#cat /proc/partitions
-#if your disk isnot clean then entered parted and creat new GPT table and save and exit then reboot
-nano /etc/pacman.d/mirrorlist #edit to your locale delete the rest then save and exit
-cfdisk /dev/sda #create partitions efi root swap
+cfdisk /dev/sda
 mkfs.fat -F32 /dev/sda1
 mkfs.btrfs /dev/sda2
 mkswap /dev/sda3
@@ -15,20 +6,20 @@ swapon /dev/sda3
 mount /dev/sda2 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
-genfstab -U /mnt >> /mnt/etc/fstab
 pacstrap /mnt base base-devel
+genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
+gen-locale
 bootctl install
 cd /boot/
 cd loader
-pacman -Sy vim
 vim loader.con # edit timeout and replace numbers with arch-* then save and exit
 cd entries/
 vim arch.conf
 title ArchLinux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-opts root=
+options root=
 :r !blkid #vim command for reading device id
 copy sda2 ids and then :yy to after the root= and then remove quotes
 save and exit
