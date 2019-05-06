@@ -1,4 +1,5 @@
-useradd -m -g users -G wheel -s /bin/bash paulr -p p
-passwd p p
+useradd -m -g users -G wheel -s /bin/zsh p
+passwd 
 nano /etc/sudoers
 add p ALL=(ALL) ALL
+userdel -r username
