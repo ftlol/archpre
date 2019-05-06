@@ -1,3 +1,0 @@
-sudo systemctl enable fstrim.timer --now
-
-sudo fstrim --all
