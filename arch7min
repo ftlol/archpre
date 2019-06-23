@@ -1,4 +1,4 @@
-cfdisk /dev/sda
+cfdisk /dev/sda #make three partitons efi, btrfs, swap
 mkfs.fat -F32 /dev/sda1
 mkfs.btrfs /dev/sda2
 mkswap /dev/sda3
@@ -9,19 +9,25 @@ mount /dev/sda1 /mnt/boot
 pacstrap /mnt base base-devel
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
-gen-locale
+vim /etc/locale.gen #uncomment us
+locale-gen
 bootctl install
 cd /boot/
 cd loader
-vim loader.con # edit timeout and replace numbers with arch-* then save and exit
+vim loader.conf # edit timeout and replace numbers with arch-* then save and exit
 cd entries/
 vim arch.conf
-title ArchLinux
+title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-options root=
+options root=UUID=****-*****-*****-** rw
 :r !blkid #vim command for reading device id
 copy sda2 ids and then :yy to after the root= and then remove quotes
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /intel-ucode.img
+initrd  /initramfs-linux.img
+options root=LABEL=arch_os rw
 save and exit
 reboot
 
