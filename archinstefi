@@ -1,4 +1,4 @@
-cfdisk /dev/sda #make three partitons efi, btrfs, swap
+cfdisk /dev/sda
 mkfs.fat -F32 /dev/sda1
 mkfs.btrfs /dev/sda2
 mkswap /dev/sda3
