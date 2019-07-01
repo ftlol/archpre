@@ -17,6 +17,6 @@ nano arch.conf
 title arch
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-options root=/dev/sdb2
+options root=/dev/sda2
 exit
 reboot
