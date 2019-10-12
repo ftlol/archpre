@@ -4,29 +4,14 @@ mkfs.btrfs /dev/sda2
 mkswap /dev/sda3
 swapon /dev/sda3
 mount /dev/sda2 /mnt
-mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
+mkdir /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
 pacstrap /mnt base base-devel
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
 vim /etc/locale.gen #uncomment us
 locale-gen
-bootctl install
-cd /boot/
-cd loader
-vim loader.conf # edit timeout and replace numbers with arch-* then save and exit
-cd entries/
-vim arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options root=UUID=****-*****-*****-** rw
-:r !blkid #vim command for reading device id
-copy sda2 ids and then :yy to after the root= and then remove quotes
-title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /intel-ucode.img
-initrd  /initramfs-linux.img
-options root=LABEL=arch_os rw
-save and exit
-reboot
+pacman -S grub efibootmgr
+grub-mkconfig -o /boot/grub/grub.cfg
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+update-grub
