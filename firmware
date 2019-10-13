@@ -1,0 +1,2 @@
+linux-firmware
+[p@archlinux ~]$ systemctl enable bluetooth.service
