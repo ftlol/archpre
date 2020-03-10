@@ -9,21 +9,20 @@ pacman -Syy
 pacman -S reflector
 reflector -c "US" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 mount /dev/sda2 /mnt
-pacstrap /mnt base base-devel linux linux-firmware vim nano grub efibootmgr
+pacstrap /mnt base base-devel linux linux-firmware vim nano grub efibootmgr networkmanager
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
-timedatectl list-timezones
-timedatectl set-timezone Amercias/Chicago
+timedatectl set-timezone Amercia/Chicago
 nano /etc/locale.gen #edit out local en_US.UTF-8
 locale-gen
 echo LANG=en_US.UTF-8 > /etc/locale.conf
 export LANG=en_US.UTF-8
-echo hp15nr > /etc/hostname
+echo computernamehere > /etc/hostname
 touch /etc/hosts
 127.0.0.1	localhost
 ::1		localhost
-127.0.1.1	myarch
-passwd
+127.0.1.1	computernamehere
+passwd for root
 mkdir /boot/efi
 mount /dev/sda1 /boot/efi
 grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
