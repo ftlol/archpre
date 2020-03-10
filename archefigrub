@@ -1,0 +1,35 @@
+cfdisk /dev/sda #make three partitons efi, btrfs, swap
+mkfs.fat -F32 /dev/sda1
+mkfs.btrfs /dev/sda2
+mkswap /dev/sda3
+swapon /dev/sda3
+wifi-menu
+ping 8.8.8.8
+pacman -Syy
+pacman -S reflector
+reflector -c "US" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
+mount /dev/sda2 /mnt
+pacstrap /mnt base base-devel linux linux-firmware vim nano grub efibootmgr
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+timedatectl list-timezones
+timedatectl set-timezone Amercias/Chicago
+nano /etc/locale.gen #edit out local en_US.UTF-8
+locale-gen
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+echo hp15nr > /etc/hostname
+touch /etc/hosts
+127.0.0.1	localhost
+::1		localhost
+127.0.1.1	myarch
+passwd
+mkdir /boot/efi
+mount /dev/sda1 /boot/efi
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+grub-mkconfig -o /boot/grub/grub.cfg
+umount -a
+exit
+reboot
+
+
